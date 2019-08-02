@@ -65,15 +65,19 @@ class Vgg(nn.Module):
         for _ in range(num_conv_blocks[2]):
             if conv1_1:
                 layers.append(ConvBlock(input_features=4 * base_features, output_features=4 * base_features, kernel=3, padding=1, stride=1, conv1_1=True))
+                conv1_1 = False
             else:
                 layers.append(ConvBlock(input_features=4*base_features, output_features=4*base_features, kernel=3, padding=1,stride=1))
         layers.append(nn.MaxPool2d(kernel_size=2,stride=2))
 
         layers.append(ConvBlock(input_features=4*base_features, output_features=8*base_features, kernel=3, padding=1, stride=1))
         for _ in range(num_conv_blocks[3]):
-            layers.append(ConvBlock(input_features=8*base_features, output_features=8*base_features, kernel=3, padding=1,stride=1))
+            if conv1_1:
+                layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1, conv1_1= True))
+                conv1_1 = False
+            else:
+                layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1))
         layers.append(nn.MaxPool2d(kernel_size=2,stride=2))
-
         for _ in range(num_conv_blocks[4]):
             layers.append(ConvBlock(input_features=8*base_features, output_features=8*base_features, kernel=3, padding=1,stride=1))
         layers.append(nn.AdaptiveAvgPool2d(8))
