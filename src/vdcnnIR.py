@@ -8,7 +8,7 @@ import torch.nn as nn
 
 class ConvBlock(nn.Module):
     def __init__(self, input_features, output_features, kernel, padding, stride):
-        super(self,ConvBlock)
+        super(ConvBlock).__init__()
         self.input_features = input_features
         output_features = output_features
         kernel = kernel
@@ -28,7 +28,7 @@ class ConvBlock(nn.Module):
 
 class VGG(nn.Module):
     def __init__(self, num_channels, num_classes, max_pool, init_weights, depth):
-        super.__init__(VGG)
+        super(VGG,self).__init__()
         self.num_channels = num_channels
         self.num_classes = num_classes
         self.max_pool = max_pool
