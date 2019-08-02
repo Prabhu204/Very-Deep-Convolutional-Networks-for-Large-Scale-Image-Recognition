@@ -15,12 +15,14 @@ class ConvBlock(nn.Module):
         padding = padding
         stride = stride
 
-        self.conv = nn.Sequential(nn.Conv2d(input_features, output_features, kernel_size= kernel, padding=padding, stride= stride),
-                                   nn.BatchNorm2d(output_features),
-                                   nn.ReLU(inplace=True))
+        self.conv = nn.Conv2d(input_features, output_features, kernel_size= kernel, padding=padding, stride= stride)
+        self.bNorm= nn.BatchNorm2d(output_features)
+        self.relu = nn.ReLU(inplace=True)
 
     def forward(self, input):
         output = self.conv(input)
+        output = self.bNorm(output)
+        output = self.relu(output)
         return output
 
 
@@ -79,3 +81,5 @@ class VGG(nn.Module):
         output = output.view(output.size(0), -1)
         output = self.fc_layers(output)
         return output
+
+
