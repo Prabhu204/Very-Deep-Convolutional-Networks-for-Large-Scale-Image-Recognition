@@ -30,11 +30,10 @@ class ConvBlock(nn.Module):
 
 
 class Vgg(nn.Module):
-    def __init__(self, num_channels, num_classes, init_weights, depth, conv1_1= False):
+    def __init__(self, num_channels, num_classes, init_weights, depth, conv1_1= False, initialize_weights=True ):
         super(Vgg,self).__init__()
         self.num_channels = num_channels
         self.num_classes = num_classes
-        self.init_weights = init_weights
         self.depth = depth
         layers = []
         fc_layers = []
@@ -108,6 +107,21 @@ class Vgg(nn.Module):
         fc_layers.extend([nn.Linear(in_features=base_features*base_features, out_features= self.num_classes)])
         self.layers = nn.Sequential(*layers)
         self.fc_layers = nn.Sequential(*fc_layers)
+        if initialize_weights:
+            self._init_weights()
+
+    def _init_weights(self):
+        for  m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out',nonlinearity='relu')
+                if m.bias is None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias,0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
     def forward(self, input):
         output = self.layers(input)
