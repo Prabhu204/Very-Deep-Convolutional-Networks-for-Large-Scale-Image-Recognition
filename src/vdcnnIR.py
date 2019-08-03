@@ -8,7 +8,7 @@ import torch.nn as nn
 
 class ConvBlock(nn.Module):
     def __init__(self, input_features, output_features, kernel, padding, stride, conv1_1=False):
-        super(ConvBlock).__init__()
+        super(ConvBlock,self).__init__()
         self.input_features = input_features
         self.output_features = output_features
         self.kernel = kernel
@@ -30,18 +30,16 @@ class ConvBlock(nn.Module):
 
 
 class Vgg(nn.Module):
-    def __init__(self, num_channels, num_classes, max_pool, init_weights, depth, conv1_1= False):
-        global num_conv_blocks
+    def __init__(self, num_channels, num_classes, init_weights, depth, conv1_1= False):
         super(Vgg,self).__init__()
         self.num_channels = num_channels
         self.num_classes = num_classes
-        self.max_pool = max_pool
         self.init_weights = init_weights
         self.depth = depth
         layers = []
         fc_layers = []
         base_features = 64
-
+        num_conv_blocks = ''
         if depth==11:
             num_conv_blocks = [0, 0, 1, 1, 2]
         elif depth== 13:
@@ -106,8 +104,8 @@ class Vgg(nn.Module):
                               stride=1))
         layers.append(nn.AdaptiveAvgPool2d(8))
         fc_layers.extend([nn.Linear(in_features=8*8*base_features, out_features= base_features*base_features),nn.ReLU()])
-        fc_layers.append([nn.Linear(in_features=base_features*base_features, out_features= base_features*base_features),nn.ReLU()])
-        fc_layers.append([nn.Linear(in_features=base_features*base_features, out_features= self.num_classes)])
+        fc_layers.extend([nn.Linear(in_features=base_features*base_features, out_features= base_features*base_features),nn.ReLU()])
+        fc_layers.extend([nn.Linear(in_features=base_features*base_features, out_features= self.num_classes)])
         self.layers = nn.Sequential(*layers)
         self.fc_layers = nn.Sequential(*fc_layers)
 
