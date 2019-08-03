@@ -62,24 +62,39 @@ class Vgg(nn.Module):
         layers.append(nn.MaxPool2d(kernel_size=2,stride=2))
 
         layers.append(ConvBlock(input_features=2*base_features, output_features=4*base_features, kernel=3, padding=1, stride=1))
-        for _ in range(num_conv_blocks[2]):
-            if conv1_1:
-                layers.append(ConvBlock(input_features=4 * base_features, output_features=4 * base_features, kernel=3, padding=1, stride=1, conv1_1=True))
-                conv1_1 = False
-            else:
-                layers.append(ConvBlock(input_features=4*base_features, output_features=4*base_features, kernel=3, padding=1,stride=1))
+
+        if conv1_1:
+            for _ in range(num_conv_blocks[2]-1):
+                layers.append(ConvBlock(input_features=4 * base_features, output_features=4 * base_features, kernel=3, padding=1,stride=1))
+            layers.append(ConvBlock(input_features=4 * base_features, output_features=4 * base_features, kernel=3, padding=1, stride=1, conv1_1=True))
+        else:
+            for _ in range(num_conv_blocks[2]):
+                layers.append(ConvBlock(input_features=4 * base_features, output_features=4 * base_features, kernel=3, padding=1, stride=1))
         layers.append(nn.MaxPool2d(kernel_size=2,stride=2))
 
         layers.append(ConvBlock(input_features=4*base_features, output_features=8*base_features, kernel=3, padding=1, stride=1))
-        for _ in range(num_conv_blocks[3]):
-            if conv1_1:
-                layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1, conv1_1= True))
-                conv1_1 = False
-            else:
+        if conv1_1:
+            for _ in range(num_conv_blocks[3]-1):
+                layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1))
+            layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1, conv1_1=True))
+        else:
+            for _ in range(num_conv_blocks[3]):
                 layers.append(ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,stride=1))
         layers.append(nn.MaxPool2d(kernel_size=2,stride=2))
-        for _ in range(num_conv_blocks[4]):
-            layers.append(ConvBlock(input_features=8*base_features, output_features=8*base_features, kernel=3, padding=1,stride=1))
+
+        if conv1_1:
+            for _ in range(num_conv_blocks[4] - 1):
+                layers.append(
+                    ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,
+                              stride=1))
+            layers.append(
+                ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,
+                          stride=1, conv1_1=True))
+        else:
+            for _ in range(num_conv_blocks[4]):
+                layers.append(
+                    ConvBlock(input_features=8 * base_features, output_features=8 * base_features, kernel=3, padding=1,
+                              stride=1))
         layers.append(nn.AdaptiveAvgPool2d(8))
         fc_layers.extend([nn.Linear(in_features=8*8*base_features, out_features= base_features*base_features),nn.ReLU()])
         fc_layers.append([nn.Linear(in_features=base_features*base_features, out_features= base_features*base_features),nn.ReLU()])
