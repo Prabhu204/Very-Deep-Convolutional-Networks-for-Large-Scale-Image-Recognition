@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
 def preprocess(path, batchsize, imagesize, shuffle = True):
     transform = tf.Compose([tf.Scale((imagesize,imagesize)),
                             tf.RandomHorizontalFlip(),
@@ -19,6 +18,7 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
     loaddata= ImageFolder(root=path, transform=transform)
     dataLoader = DataLoader(dataset=loaddata, batch_size= batchsize, shuffle=shuffle)
     classes_ = loaddata.classes
+    dataLoader
     images, class_ = iter(dataLoader).__next__()
     def plot_img(img):
         img = img/2 +0.5

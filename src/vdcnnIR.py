@@ -30,7 +30,7 @@ class ConvBlock(nn.Module):
 
 
 class Vgg(nn.Module):
-    def __init__(self, num_channels, num_classes, init_weights, depth, conv1_1= False, initialize_weights=True ):
+    def __init__(self, num_channels, num_classes, depth, conv1_1= False, initialize_weights=True ):
         super(Vgg,self).__init__()
         self.num_channels = num_channels
         self.num_classes = num_classes
