@@ -5,6 +5,7 @@
 
 import os
 import argparse
+import torch
 import torch.nn as nn
 import sklearn.metrics as metrics
 import numpy as np
@@ -35,7 +36,19 @@ def train(opt):
     traindata, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
     validationdata, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
     num_channels = iter(traindata).__next__().size()[1]
-    model = Vgg(num_channels=num_channels,num_classes=classes,initialize_weights=True,conv1_1=opt.conv1_1)
-
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model = Vgg(num_channels=num_channels,num_classes=classes,initialize_weights=True,conv1_1=opt.conv1_1).to(device)
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+    criterion = nn.CrossEntropyLoss()
+
+    name = 'loss_{}'.format(opt.depth)
+    name = []
+    for epoch in range(opt.epochs):
+        for idx, data in enumerate(traindata):
+            data_, label = data.to(device)
+            prob = model.fit(data_)
+            loss = criterion(prob, label)
+            loss.backward()
+            optimizer.step()
+
 
