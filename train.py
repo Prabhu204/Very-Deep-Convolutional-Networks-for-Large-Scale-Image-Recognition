@@ -23,9 +23,12 @@ def get_args():
                                                                               It must be in the data directory """)
     parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=128, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
-    parser.add_argument('--d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model.')
+    parser.add_argument('--d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
                         help="""setting it True will replace some of the 3x3 Conv layers with 1x1 Conv layers in the 16 layer network""")
+    parser.add_argument('--es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
+                                                                        if does not improve validation loss""")
+
     parser.add_argument()
 
 
@@ -45,6 +48,26 @@ def train(opt):
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
     criterion = nn.CrossEntropyLoss()
 
+    def early_stopping(val_loss, model, patience= opt.early_stopping):
+        early_stop = None
+        count = 0
+        best_score = None
+        if best_score is None:
+            best_score = val_loss
+            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+        elif val_loss < best_score:
+            count +=1
+            print("Loss:{} doesn't improved from {}".format(val_loss, best_score))
+            if count >= patience:
+                early_stop = True
+        else:
+            print("Loss:{} improved from {}. Saving model........".format(val_loss, best_score))
+            best_score = val_loss
+            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+            count = 0
+        return early_stop, best_score
+
+    totalVal_loss = []
     totalTrain_loss = []
     for epoch in range(opt.epochs):
         model.train()
