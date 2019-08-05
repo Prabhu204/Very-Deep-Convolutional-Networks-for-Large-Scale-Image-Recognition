@@ -15,11 +15,13 @@ import matplotlib.pyplot as plt
 import torch.optim as optim
 import scikitplot
 import shutil
+import pickle
+
 def get_args():
     parser = argparse.ArgumentParser("""Very Deep Convolutional Networks for Large Scale Image Recognition""")
     parser.add_argument('-t', '--train', type=str, default='train', help="""required image dataset for training a model.
                                                                            It must be in the data directory """)
-    parser.add_argument('-v', '--val', type=str, default='val', help="""required image dataset for training a model.
+    parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
     parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=128, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
@@ -29,13 +31,11 @@ def get_args():
     parser.add_argument('--es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
                                                                         if does not improve validation loss""")
 
-    parser.add_argument()
-
-
-
-
+    args = parser.parse_args()
+    return args
 
 def train(opt):
+    global best_valLoss
     traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
     valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
     num_channels = iter(traindata).__next__().size()[1]
@@ -129,10 +129,29 @@ def train(opt):
 
 
         flag_, best_valLoss = early_stopping(val_loss=loss_v, model=model)
+
         if flag_:
             break
-    return best_valLoss
+    def plot_fig(train_loss, val_loss):
+        plt.figure(figsize=(10,8))
+        plt.title("Train Vs Val loss")
+        plt.plot(train_loss, label= 'Train_loss')
+        plt.plot(val_loss, label= 'Val_loss')
+        plt.xlabel("Epochs")
+        plt.ylabel("Loss")
+        plt.legend()
+        plt.savefig("figures/trainVal_loss.png")
+        return plt.draw()
+    losses = {'trainLoss':totalTrain_loss, 'valLoss':totalVal_loss}
+    with open('results/losses_{}'.format(opt.depth)) as f:
+        pickle.dump(losses, f)
 
+    return best_valLoss, plot_fig(train_loss= totalTrain_loss, val_loss= totalVal_loss)
 
+if __name__ == '__main__':
+    opt = get_args()
+    loss, fig = train(opt)
+    print(loss)
+    print(fig)
 
 
