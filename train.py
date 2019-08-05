@@ -39,10 +39,18 @@ def train(opt):
     traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
     valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
     num_channels = iter(traindata).__next__().size()[1]
-    path = 'results/VdcnnIR_{}.txt'.format(opt.depth)
-    if os.path.exists(path):
-        shutil.rmtree(path)
-        os.mknod(path)
+    path_t = 'results/VdcnnIR_train_{}.txt'.format(opt.depth)
+    path_v = 'results/VdcnnIR_val_{}.txt'.format(opt.depth)
+    if os.path.exists(path_t):
+        shutil.rmtree(path_t)
+        os.mknod(path_t)
+    else:
+        os.mknod(path_t)
+    if os.path.exists(path_v):
+        shutil.rmtree(path_v)
+        os.mknod(path_v)
+    else:
+        os.mknod(path_v)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = Vgg(num_channels=num_channels,num_classes=classes,initialize_weights=True,conv1_1=opt.conv1_1).to(device)
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
@@ -77,7 +85,8 @@ def train(opt):
         for idx, data in enumerate(traindata):
             data_, label = data.to(device)
             optimizer.zero_grad()
-            prob = model.fit(data_).view(-1)
+            prob = model.fit(data_)
+            print(prob)
             prob_ = np.argmax(prob.detach().cpu(), -1)
             loss = criterion(prob, label)
             train_loss.append(loss.item()*len(label.cpu()))
@@ -85,26 +94,44 @@ def train(opt):
             optimizer.step()
             total_predictions.extend(prob_)
             total_labels.extend(label.cpu())
-            print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx+1, len(trainGenerator), epoch+1, opt.epochs, loss.item(),metrics.accuracy_score(label.cpu(), prob_)))
+            print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx+1, len(trainGenerator), epoch+1, opt.epochs,
+                                                                    loss.item(),
+                                                                    metrics.accuracy_score(label.cpu(), prob_)))
+
         loss_epoch = sum(train_loss)/len(traindata)
         totalTrain_loss.append(loss_epoch)
-        with open(path, 'a') as f:
-            f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, loss_epoch, metrics.accuracy_score(total_labels,total_predictions)))
+        with open(path_t, 'a') as f:
+            f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, loss_epoch,
+                                                         metrics.accuracy_score(total_labels,total_predictions)))
+
 
         model.eval()
         val_loss = []
         total_Valpredictions = []
         total_ValLabels = []
-
         for idx_e, data_e in enumerate(validationGenerator):
             data_e,label_e = data_e.to(device)
             with torch.no_grad():
                 prob_e = model(data_e)
                 pred_e = np.argmax(prob_e,-1)
-                loss = criterion(prob_e, label_e)
-                val_loss.append(loss.item()*len(label_e))
+                loss_v = criterion(prob_e, label_e)
+                val_loss.append(loss_v.item()*len(label_e))
+                total_ValLabels.extend(label_e.cpu())
+                total_Valpredictions.extend(prob_e)
+                print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx_e + 1, len(trainGenerator), epoch + 1,
+                                                                        opt.epochs, loss_v.item(),
+                                                                        metrics.accuracy_score(label_e.cpu(), pred_e)))
+        val_lossEpoch= sum(val_loss)/len(valdata)
+        totalVal_loss.append(val_lossEpoch)
+        with open(path_v, 'a') as f:
+            f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, val_lossEpoch,
+                                                         metrics.accuracy_score(total_ValLabels,total_Valpredictions)))
 
 
+        flag_, best_valLoss = early_stopping(val_loss=loss_v, model=model)
+        if flag_:
+            break
+    return best_valLoss
 
 
 
