@@ -36,8 +36,8 @@ def get_args():
 
 
 def train(opt):
-    traindata, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
-    validationdata, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
+    traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
+    valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
     num_channels = iter(traindata).__next__().size()[1]
     path = 'results/VdcnnIR_{}.txt'.format(opt.depth)
     if os.path.exists(path):
@@ -71,7 +71,7 @@ def train(opt):
     totalTrain_loss = []
     for epoch in range(opt.epochs):
         model.train()
-        train_loss = 0
+        train_loss = []
         total_predictions = []
         total_labels = []
         for idx, data in enumerate(traindata):
@@ -80,16 +80,30 @@ def train(opt):
             prob = model.fit(data_).view(-1)
             prob_ = np.argmax(prob.detach().cpu(), -1)
             loss = criterion(prob, label)
-            train_loss +=loss.item()
+            train_loss.append(loss.item()*len(label.cpu()))
             loss.backward()
             optimizer.step()
             total_predictions.extend(prob_)
             total_labels.extend(label.cpu())
-            print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx+1, len(traindata), epoch+1, opt.epochs, loss.item(),metrics.accuracy_score(label.cpu(), prob_)))
-        loss_epoch = train_loss/len(traindata)
+            print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx+1, len(trainGenerator), epoch+1, opt.epochs, loss.item(),metrics.accuracy_score(label.cpu(), prob_)))
+        loss_epoch = sum(train_loss)/len(traindata)
         totalTrain_loss.append(loss_epoch)
         with open(path, 'a') as f:
             f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, loss_epoch, metrics.accuracy_score(total_labels,total_predictions)))
+
+        model.eval()
+        val_loss = []
+        total_Valpredictions = []
+        total_ValLabels = []
+
+        for idx_e, data_e in enumerate(validationGenerator):
+            data_e,label_e = data_e.to(device)
+            with torch.no_grad():
+                prob_e = model(data_e)
+                pred_e = np.argmax(prob_e,-1)
+                loss = criterion(prob_e, label_e)
+                val_loss.append(loss.item()*len(label_e))
+
 
 
 

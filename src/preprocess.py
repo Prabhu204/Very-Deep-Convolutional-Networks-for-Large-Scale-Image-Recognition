@@ -11,6 +11,7 @@ import numpy as np
 
 
 def preprocess(path, batchsize, imagesize, shuffle = True):
+
     transform = tf.Compose([tf.Scale((imagesize,imagesize)),
                             tf.RandomHorizontalFlip(),
                             tf.ToTensor(),
@@ -18,7 +19,6 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
     loaddata= ImageFolder(root=path, transform=transform)
     dataLoader = DataLoader(dataset=loaddata, batch_size= batchsize, shuffle=shuffle)
     classes_ = loaddata.classes
-    dataLoader
     images, class_ = iter(dataLoader).__next__()
     def plot_img(img):
         img = img/2 +0.5
@@ -33,5 +33,5 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
         print(class_[i])
         if i == 3:
             break
-    plt.savefig('results/sample.png')
-    return dataLoader, len(classes_)
+    plt.savefig('figures/sample.png')
+    return loaddata, dataLoader, len(classes_)
