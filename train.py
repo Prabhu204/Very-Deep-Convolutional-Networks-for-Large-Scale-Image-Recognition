@@ -126,10 +126,10 @@ def train(opt):
         with open(path_v, 'a') as f:
             f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, val_lossEpoch,
                                                          metrics.accuracy_score(total_ValLabels,total_Valpredictions)))
-
-
         flag_, best_valLoss = early_stopping(val_loss=loss_v, model=model)
-
+        roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
+        plt.savefig('figures/ROC_{}.png'.format(opt.depth))
+        plt.show()
         if flag_:
             break
     def plot_fig(train_loss, val_loss):
@@ -141,17 +141,17 @@ def train(opt):
         plt.ylabel("Loss")
         plt.legend()
         plt.savefig("figures/trainVal_loss.png")
-        return plt.draw()
+        return plt.show()
     losses = {'trainLoss':totalTrain_loss, 'valLoss':totalVal_loss}
-    with open('results/losses_{}'.format(opt.depth)) as f:
+    loss_fig =  plot_fig(train_loss= totalTrain_loss, val_loss= totalVal_loss)
+    with open('results/losses_{}'.format(opt.depth), 'wb') as f:
         pickle.dump(losses, f)
-
-    return best_valLoss, plot_fig(train_loss= totalTrain_loss, val_loss= totalVal_loss)
+    return best_valLoss, loss_fig
 
 if __name__ == '__main__':
     opt = get_args()
-    loss, fig = train(opt)
+    loss, loss_fig = train(opt)
     print(loss)
-    print(fig)
+    print(loss_fig)
 
 
