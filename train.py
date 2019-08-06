@@ -25,34 +25,39 @@ def get_args():
                                                                               It must be in the data directory """)
     parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=128, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
-    parser.add_argument('--d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
+    parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
                         help="""setting it True will replace some of the 3x3 Conv layers with 1x1 Conv layers in the 16 layer network""")
-    parser.add_argument('--es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
+    parser.add_argument('-es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
                                                                         if does not improve validation loss""")
-
+    parser.add_argument('-i', '--imagesize', type=int, default=224, help="it is used to resize the image pixels" )
+    parser.add_argument('-lr', '--lr', type=int, default=0.01)
     args = parser.parse_args()
     return args
 
 def train(opt):
     global best_valLoss
-    traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize, shuffle=True)
-    valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize, shuffle=False)
-    num_channels = iter(traindata).__next__().size()[1]
+    traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize,
+                                                    imagesize=opt.imagesize, shuffle=True)
+    valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize,
+                                                      imagesize=opt.imagesize, shuffle=False)
+    # print(iter(trainGenerator).__next__())
+    num_channels = iter(trainGenerator).__next__()[0].size()[1]
     path_t = 'results/VdcnnIR_train_{}.txt'.format(opt.depth)
     path_v = 'results/VdcnnIR_val_{}.txt'.format(opt.depth)
     if os.path.exists(path_t):
-        shutil.rmtree(path_t)
+        os.remove(path_t)
         os.mknod(path_t)
     else:
         os.mknod(path_t)
     if os.path.exists(path_v):
-        shutil.rmtree(path_v)
+        os.remove(path_v)
         os.mknod(path_v)
     else:
         os.mknod(path_v)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = Vgg(num_channels=num_channels,num_classes=classes,initialize_weights=True,conv1_1=opt.conv1_1).to(device)
+    model = Vgg(num_channels=num_channels,num_classes=classes,depth=opt.depth, initialize_weights=True,
+                conv1_1=opt.conv1_1).to(device)
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
     criterion = nn.CrossEntropyLoss()
 
@@ -83,9 +88,10 @@ def train(opt):
         total_predictions = []
         total_labels = []
         for idx, data in enumerate(traindata):
-            data_, label = data.to(device)
+            data_, label = data
+            data_ = data_.to(device)
             optimizer.zero_grad()
-            prob = model.fit(data_)
+            prob = model(data_)
             print(prob)
             prob_ = np.argmax(prob.detach().cpu(), -1)
             loss = criterion(prob, label)
@@ -110,7 +116,8 @@ def train(opt):
         total_Valpredictions = []
         total_ValLabels = []
         for idx_e, data_e in enumerate(validationGenerator):
-            data_e,label_e = data_e.to(device)
+            data_e,label_e = data_e
+            data_e = data_e.to(device)
             with torch.no_grad():
                 prob_e = model(data_e)
                 pred_e = np.argmax(prob_e,-1)
@@ -132,6 +139,7 @@ def train(opt):
         plt.show()
         if flag_:
             break
+        model.train()
     def plot_fig(train_loss, val_loss):
         plt.figure(figsize=(10,8))
         plt.title("Train Vs Val loss")

@@ -30,7 +30,7 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
         axes[i].set_title(classes_[class_[i]])
         axes[i].set_xticks([])
         axes[i].set_yticks([])
-        print(class_[i])
+        # print(class_[i])
         if i == 3:
             break
     plt.savefig('figures/sample.png')
