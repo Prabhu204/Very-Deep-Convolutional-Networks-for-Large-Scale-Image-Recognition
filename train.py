@@ -23,7 +23,7 @@ def get_args():
                                                                            It must be in the data directory """)
     parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=32, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=50, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
     parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
@@ -71,7 +71,9 @@ def train(opt):
         plt.ylabel("Loss")
         plt.legend()
         plt.savefig("figures/trainVal_loss.png")
-        return plt.show()
+        plt.show()
+        return plt.close()
+
 
     def early_stopping(val_loss, model, patience= opt.early_stopping):
         early_stop = None
@@ -153,8 +155,8 @@ def train(opt):
         # roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
         # plt.savefig('figures/ROC_{}.png'.format(opt.depth))
         # plt.show()
-        loss_fig = plot_fig(train_loss=totalTrain_loss, val_loss=totalVal_loss)
-        print(loss_fig)
+        plot_fig(train_loss=totalTrain_loss, val_loss=totalVal_loss)
+        # print(loss_fig)
         if flag_:
             break
         model.train()
@@ -162,12 +164,11 @@ def train(opt):
     losses = {'trainLoss':totalTrain_loss, 'valLoss':totalVal_loss}
     with open('results/losses_{}'.format(opt.depth), 'wb') as f:
         pickle.dump(losses, f)
-    return best_valLoss, loss_fig
+    return best_valLoss
 
 if __name__ == '__main__':
     opt = get_args()
-    loss, loss_fig = train(opt)
+    loss = train(opt)
     print(loss)
-    print(loss_fig)
 
 
