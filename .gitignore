@@ -4,4 +4,4 @@ xxx.png
 data/
 models/
 new.py
-__pycache__/
+.__pycache__
