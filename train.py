@@ -126,6 +126,7 @@ def train(opt):
 
 
         model.eval()
+
         val_loss = []
         total_Valpredictions = []
         total_ValLabels = []
@@ -136,10 +137,10 @@ def train(opt):
             with torch.no_grad():
                 prob_e = model(data_e)
                 loss_v = criterion(prob_e, label_e)
-                pred_e = np.argmax(prob_e,-1)
+                pred_e = np.argmax(prob_e.detach().cpu(),-1)
                 val_loss.append(loss_v.item()*len(label_e.cpu()))
                 total_ValLabels.extend(label_e.cpu())
-                total_Valpredictions.extend(prob_e)
+                total_Valpredictions.extend(pred_e)
                 print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx_e + 1, len(trainGenerator), epoch + 1,
                                                                         opt.epochs, loss_v.item(),
                                                                         metrics.accuracy_score(label_e.cpu(), pred_e)))
