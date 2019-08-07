@@ -141,7 +141,7 @@ def train(opt):
                 val_loss.append(loss_v.item()*len(label_e.cpu()))
                 total_ValLabels.extend(label_e.cpu())
                 total_Valpredictions.extend(pred_e)
-                print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx_e + 1, len(trainGenerator), epoch + 1,
+                print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx_e + 1, len(validationGenerator), epoch + 1,
                                                                         opt.epochs, loss_v.item(),
                                                                         metrics.accuracy_score(label_e.cpu(), pred_e)))
         val_lossEpoch= sum(val_loss)/len(valdata)
@@ -150,9 +150,9 @@ def train(opt):
             f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, val_lossEpoch,
                                                          metrics.accuracy_score(total_ValLabels,total_Valpredictions)))
         flag_, best_valLoss = early_stopping(val_loss=loss_v, model=model)
-        roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
-        plt.savefig('figures/ROC_{}.png'.format(opt.depth))
-        plt.show()
+        # roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
+        # plt.savefig('figures/ROC_{}.png'.format(opt.depth))
+        # plt.show()
         loss_fig = plot_fig(train_loss=totalTrain_loss, val_loss=totalVal_loss)
         print(loss_fig)
         if flag_:
