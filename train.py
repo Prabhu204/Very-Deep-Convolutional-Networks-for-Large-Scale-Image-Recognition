@@ -23,7 +23,7 @@ def get_args():
                                                                            It must be in the data directory """)
     parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=64, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=32, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
     parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
@@ -42,6 +42,7 @@ def train(opt):
     valdata, validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize,
                                                       imagesize=opt.imagesize, shuffle=True)
     # print(iter(trainGenerator).__next__())
+
     num_channels = iter(trainGenerator).__next__()[0].size()[1]
     path_t = 'results/VdcnnIR_train_{}.txt'.format(opt.depth)
     path_v = 'results/VdcnnIR_val_{}.txt'.format(opt.depth)
@@ -60,6 +61,17 @@ def train(opt):
                 conv1_1=opt.conv1_1).to(device)
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
     criterion = nn.CrossEntropyLoss()
+
+    def plot_fig(train_loss, val_loss):
+        plt.figure(figsize=(10,8))
+        plt.title("Train Vs Val loss")
+        plt.plot(train_loss, label= 'Train_loss')
+        plt.plot(val_loss, label= 'Val_loss')
+        plt.xlabel("Epochs")
+        plt.ylabel("Loss")
+        plt.legend()
+        plt.savefig("figures/trainVal_loss.png")
+        return plt.show()
 
     def early_stopping(val_loss, model, patience= opt.early_stopping):
         early_stop = None
@@ -90,10 +102,11 @@ def train(opt):
         for idx, data in enumerate(trainGenerator):
             data_, label = data[0], data[1]
             data_ = data_.to(device)
-            print(data_.size())
+            label = label.to(device)
+            # print(data_.size())
             optimizer.zero_grad()
             prob = model(data_)
-            print(prob)
+            # print(prob)
             prob_ = np.argmax(prob.detach().cpu(), -1)
             loss = criterion(prob, label)
             train_loss.append(loss.item()*len(label.cpu()))
@@ -117,13 +130,14 @@ def train(opt):
         total_Valpredictions = []
         total_ValLabels = []
         for idx_e, data_e in enumerate(validationGenerator):
-            data_e,label_e = data_e
+            data_e,label_e = data_e[0], data_e[1]
             data_e = data_e.to(device)
+            label_e= label_e.to(device)
             with torch.no_grad():
                 prob_e = model(data_e)
-                pred_e = np.argmax(prob_e,-1)
                 loss_v = criterion(prob_e, label_e)
-                val_loss.append(loss_v.item()*len(label_e))
+                pred_e = np.argmax(prob_e,-1)
+                val_loss.append(loss_v.item()*len(label_e.cpu()))
                 total_ValLabels.extend(label_e.cpu())
                 total_Valpredictions.extend(prob_e)
                 print('Iter[{}/{}]\tEpoch[{}/{}]\tLoss{}\tacc{}'.format(idx_e + 1, len(trainGenerator), epoch + 1,
@@ -138,21 +152,13 @@ def train(opt):
         roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
         plt.savefig('figures/ROC_{}.png'.format(opt.depth))
         plt.show()
+        loss_fig = plot_fig(train_loss=totalTrain_loss, val_loss=totalVal_loss)
+        print(loss_fig)
         if flag_:
             break
         model.train()
-    def plot_fig(train_loss, val_loss):
-        plt.figure(figsize=(10,8))
-        plt.title("Train Vs Val loss")
-        plt.plot(train_loss, label= 'Train_loss')
-        plt.plot(val_loss, label= 'Val_loss')
-        plt.xlabel("Epochs")
-        plt.ylabel("Loss")
-        plt.legend()
-        plt.savefig("figures/trainVal_loss.png")
-        return plt.show()
+
     losses = {'trainLoss':totalTrain_loss, 'valLoss':totalVal_loss}
-    loss_fig =  plot_fig(train_loss= totalTrain_loss, val_loss= totalVal_loss)
     with open('results/losses_{}'.format(opt.depth), 'wb') as f:
         pickle.dump(losses, f)
     return best_valLoss, loss_fig

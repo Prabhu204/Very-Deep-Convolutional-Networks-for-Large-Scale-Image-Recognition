@@ -23,7 +23,7 @@ class ConvBlock(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        print(x.size())
+        # print(x.size())
         output = self.conv(x)
         output = self.bNorm(output)
         output = self.relu(output)
@@ -127,7 +127,7 @@ class Vgg(nn.Module):
         # print(x.size())
         output = self.layers(x)
         output = output.view(output.size(0), -1)
-        print(output.size())
+        # print(output.size())
         output = self.fc_layers(output)
         return output
 
