@@ -11,7 +11,6 @@ import numpy as np
 
 
 def preprocess(path, batchsize, imagesize, shuffle = True):
-
     transform = tf.Compose([tf.Scale((imagesize,imagesize)),
                             tf.RandomHorizontalFlip(),
                             tf.ToTensor(),
@@ -33,5 +32,8 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
         # print(class_[i])
         if i == 3:
             break
-    plt.savefig('figures/sample.png')
+    count= 0
+    if count is None:
+        plt.savefig('figures/train_sample.png')
+    plt.savefig('figures/val_sample.png')
     return loaddata, dataLoader, len(classes_)

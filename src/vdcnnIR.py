@@ -16,14 +16,15 @@ class ConvBlock(nn.Module):
         self.stride = stride
         self.conv1_1 = conv1_1
         if conv1_1:
-            self.conv = nn.Conv2d(input_features,output_features, kernel_size=1, padding=padding, stride=stride)
+            self.conv = nn.Conv2d(in_channels=input_features, out_channels=output_features, kernel_size=1, padding=padding, stride=stride)
         else:
-            self.conv = nn.Conv2d(input_features,output_features, kernel_size= kernel, padding=padding, stride= stride)
+            self.conv = nn.Conv2d(in_channels=input_features,out_channels=output_features, kernel_size= kernel, padding=padding, stride= stride)
         self.bNorm= nn.BatchNorm2d(output_features)
         self.relu = nn.ReLU(inplace=True)
 
-    def forward(self, input):
-        output = self.conv(input)
+    def forward(self, x):
+        print(x.size())
+        output = self.conv(x)
         output = self.bNorm(output)
         output = self.relu(output)
         return output
@@ -38,7 +39,6 @@ class Vgg(nn.Module):
         layers = []
         fc_layers = []
         base_features = 64
-        num_conv_blocks = ''
         if depth==11:
             num_conv_blocks = [0, 0, 1, 1, 2]
         elif depth== 13:
@@ -123,9 +123,11 @@ class Vgg(nn.Module):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
 
-    def forward(self, input):
-        output = self.layers(input)
+    def forward(self, x):
+        # print(x.size())
+        output = self.layers(x)
         output = output.view(output.size(0), -1)
+        print(output.size())
         output = self.fc_layers(output)
         return output
 

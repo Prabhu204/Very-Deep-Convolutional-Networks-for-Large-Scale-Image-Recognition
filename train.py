@@ -23,7 +23,7 @@ def get_args():
                                                                            It must be in the data directory """)
     parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=128, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=16, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
     parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
@@ -39,8 +39,8 @@ def train(opt):
     global best_valLoss
     traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize,
                                                     imagesize=opt.imagesize, shuffle=True)
-    valdata,validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize,
-                                                      imagesize=opt.imagesize, shuffle=False)
+    valdata, validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize,
+                                                      imagesize=opt.imagesize, shuffle=True)
     # print(iter(trainGenerator).__next__())
     num_channels = iter(trainGenerator).__next__()[0].size()[1]
     path_t = 'results/VdcnnIR_train_{}.txt'.format(opt.depth)
@@ -87,9 +87,10 @@ def train(opt):
         train_loss = []
         total_predictions = []
         total_labels = []
-        for idx, data in enumerate(traindata):
-            data_, label = data
+        for idx, data in enumerate(trainGenerator):
+            data_, label = data[0], data[1]
             data_ = data_.to(device)
+            print(data_.size())
             optimizer.zero_grad()
             prob = model(data_)
             print(prob)
