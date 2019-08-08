@@ -4,7 +4,9 @@
 # Very-Deep-Convolutional-Networks-for-Large-Scale-Image-Recognition
 
 This project work is a implementation of [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/pdf/1409.1556.pdf) in Pytorch. 
-However, the dataset used for this project is from [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). 
+However, the dataset used for this project is from [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). Model performance can be 
+improved by using smaller convolutional filter
+(i.e feature extraction maps) with 3x3 size while increasing network layer depth.  
 
 ### Model Architecture
 The models were implemented as per original paper description, which can be seen in the following figure.
@@ -19,11 +21,11 @@ The dataset is devided in to 3 sets:
 - Validationset has composed with a 50 samples per each class. 
 - Testset is a total size 10000 samples.
 
-<b>Sample images from trainset</b>
+<b>Sample images from trainset:</b>
 
 ![trainsample](figures/train_sample.png)
 
-<b>Sample images from validationset</b>
+<b>Sample images from validationset:</b>
 
 ![valsample](figures/val_sample.png)
 
