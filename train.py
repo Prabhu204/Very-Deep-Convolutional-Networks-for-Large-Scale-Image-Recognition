@@ -40,7 +40,7 @@ def train(opt):
     traindata, trainGenerator, classes = preprocess(path='./data'+os.sep+opt.train, batchsize=opt.batchsize,
                                                     imagesize=opt.imagesize, shuffle=True)
     valdata, validationGenerator, classes = preprocess(path='./data'+os.sep+opt.val, batchsize=opt.batchsize,
-                                                      imagesize=opt.imagesize, shuffle=True)
+                                                      imagesize=opt.imagesize, shuffle=False)
     # print(iter(trainGenerator).__next__())
 
     num_channels = iter(trainGenerator).__next__()[0].size()[1]
@@ -70,32 +70,18 @@ def train(opt):
         plt.xlabel("Epochs")
         plt.ylabel("Loss")
         plt.legend()
-        plt.savefig("figures/trainVal_loss.png")
-        plt.show()
-        return plt.close()
+        plt.savefig("figures/trainVal_loss_{}.png".format(opt.depth))
+        # plt.show()
+        # plt.close()
+        return None
 
-
-    def early_stopping(val_loss, model, patience= opt.early_stopping):
-        early_stop = None
-        count = 0
-        best_score = None
-        if best_score is None:
-            best_score = val_loss
-            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
-        elif val_loss < best_score:
-            count +=1
-            print("Loss:{} doesn't improved from {}".format(val_loss, best_score))
-            if count >= patience:
-                early_stop = True
-        else:
-            print("Loss:{} improved from {}. Saving model........".format(val_loss, best_score))
-            best_score = val_loss
-            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
-            count = 0
-        return early_stop, best_score
 
     totalVal_loss = []
     totalTrain_loss = []
+    early_stop = False
+    count = 0
+    best_score = None
+
     for epoch in range(opt.epochs):
         model.train()
         train_loss = []
@@ -123,12 +109,11 @@ def train(opt):
         loss_epoch = sum(train_loss)/len(traindata)
         totalTrain_loss.append(loss_epoch)
         with open(path_t, 'a') as f:
-            f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, loss_epoch,
+            f.write('Epoch{}\tLoss{}\tAccuracy{}\n'.format(epoch+1, loss_epoch,
                                                          metrics.accuracy_score(total_labels,total_predictions)))
 
 
         model.eval()
-
         val_loss = []
         total_Valpredictions = []
         total_ValLabels = []
@@ -149,7 +134,7 @@ def train(opt):
         val_lossEpoch= sum(val_loss)/len(valdata)
         totalVal_loss.append(val_lossEpoch)
         with open(path_v, 'a') as f:
-            f.write('Epoch{}\tLoss{}\tAccuracy{}'.format(epoch+1, val_lossEpoch,
+            f.write('Epoch{}\tLoss{}\tAccuracy{}\n'.format(epoch+1, val_lossEpoch,
                                                          metrics.accuracy_score(total_ValLabels,total_Valpredictions)))
         flag_, best_valLoss = early_stopping(val_loss=loss_v, model=model)
         # roc_fig = scikitplot.metrics.plot_roc(total_ValLabels, total_Valpredictions, figsize=(12, 12))
@@ -157,10 +142,22 @@ def train(opt):
         # plt.show()
         plot_fig(train_loss=totalTrain_loss, val_loss=totalVal_loss)
         # print(loss_fig)
-        if flag_:
+        if best_score is None:
+            best_score = val_loss
+            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+        elif val_loss > best_score:
+            print("Loss:{} doesn't decreased from {}".format(val_loss, best_score))
+            count +=1
+            if count >= opt.early_stopping:
+                early_stop = True
+        elif val_loss < best_score:
+            print("Loss:{} decreased from {}. Saving model........".format(val_loss, best_score))
+            best_score = val_loss
+            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+            count = 0
+        if early_stop:
             break
         model.train()
-
     losses = {'trainLoss':totalTrain_loss, 'valLoss':totalVal_loss}
     with open('results/losses_{}'.format(opt.depth), 'wb') as f:
         pickle.dump(losses, f)
