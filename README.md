@@ -35,8 +35,27 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 ### Results
 
+<b>Accuracy:</b>
 Coming soon
 
+|layers Vs Dataset    | Trainset | Valset | Testset |
+|-------------------|----------|--------|---------|
+| 11 layers         |          |        |         |
+| 13 layers         |          |        |         |
+| 16 layers         |          |        |         |
+| 16 layers, Cf:1x1 |          |        |         |
+| 19 layers         |          |        |         |
+
+<b>Loss:</b>
+Coming soon
+
+|layers Vs Dataset    | Trainset | Valset | Testset |
+|-------------------|----------|--------|---------|
+| 11 layers         |          |        |         |
+| 13 layers         |          |        |         |
+| 16 layers         |          |        |         |
+| 16 layers, Cf:1x1 |          |        |         |
+| 19 layers         |          |        |         |
 
 ### Usage
 
