@@ -31,7 +31,7 @@ def get_args():
     parser.add_argument('-es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
                                                                         if does not improve validation loss""")
     parser.add_argument('-i', '--imagesize', type=int, default=224, help="it is used to resize the image pixels" )
-    parser.add_argument('-lr', '--lr', type=int, default=0.001)
+    parser.add_argument('-lr', '--lr', type=int, default=0.001, help="learning rate for an Adam optimizer")
     args = parser.parse_args()
     return args
 

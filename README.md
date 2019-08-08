@@ -2,10 +2,10 @@
 # Very-Deep-Convolutional-Networks-for-Large-Scale-Image-Recognition
 
 This project work is a implementation of [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/pdf/1409.1556.pdf) in Pytorch. 
-However, the dataset used for this project is a [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). 
+However, the dataset used for this project is from [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). 
 
 ### Model Architecture
-The model has implemented as per original paper description, which can be seen in the following figure.
+The models were implemented as per original paper description, which can be seen in the following figure.
 
 ![Model Architecture](figures/ConNet_config.png)
 
@@ -13,18 +13,45 @@ The model has implemented as per original paper description, which can be seen i
 
 The dataset is devided in to 3 sets:
 
-- Train set is composed with 200 clasess and each class has 200 samples with a 64x64 pixels
-- Validation has composed with a 50 samples per each class. 
+- Trainset is composed with 200 clasess and each class has 200 samples with a 64x64 pixels
+- Validationset has composed with a 50 samples per each class. 
 - Testset is a total size 10000 samples.
 
 ### Computing resources 
-The models were trained on GPU, which is having a configuration of Nvidia-GTX 1070 8gb. Each model has took 14h to 20h for training.  
+The models were trained on GPU, which is having a configuration of Nvidia-GTX 1070 8gb. Each model has took approx. 14h to 20h for training.  
 
 ### Results
 
-
+Coming soon
 
 
 ### Usage
+
+        Very Deep Convolutional Networks for Large Scale Image Recognition
+               [-h] [-t TRAIN] [-v VAL] [-b {64,128,256}] [-e {50,100,150}]
+               [-d {11,13,16,19}] [-c11] [-es EARLY_STOPPING] [-i IMAGESIZE] [-lr LR]
+
+
+        optional arguments:
+          -h, --help            show this help message and exit
+          -t TRAIN, --train TRAIN
+                                required image dataset for training a model. It must
+                                be in the data directory
+          -v VAL, --val VAL     required image dataset for training a model. It must
+                                be in the data directory
+          -b {64,128,256}, --batchsize {64,128,256}
+                                select number of samples to load from dataset
+          -e {50,100,150}, --epochs {50,100,150}
+          -d {11,13,16,19}, --depth {11,13,16,19}
+                                depth of the deep learning model
+          -c11, --conv1_1       setting it True will replace some of the 3x3 Conv
+                                layers with 1x1 Conv layers in the 16 layer network
+          -es EARLY_STOPPING, --early_stopping EARLY_STOPPING
+                                early stopping is used to stop training of network, if
+                                does not improve validation loss
+          -i IMAGESIZE, --imagesize IMAGESIZE
+                                it is used to resize the image pixels
+          -lr LR, --lr LR       learning rate for an Adam optimizer
+
 
 
