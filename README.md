@@ -11,6 +11,33 @@ improved by using smaller convolutional filter
 ### Model Architecture
 The models were implemented as per original paper description, which can be seen in the following figure.
 
+
+<!Doctype>
+<html>
+<head>
+	<style>
+.img {
+		width: 400px;
+		height: 200px;
+		border:2px solid #fff;
+		background: url(figures/ConNet_config.png) no-repeat;
+		-moz-box-shadow: 10px 10px 5px #ccc;
+		-webkit-box-shadow: 10px 10px 5px #ccc;
+		box-shadow: 10px 10px 5px #ccc;
+		-moz-border-radius:25px;
+		-webkit-border-radius:25px;
+		border-radius:25px;
+	}</style>
+</head>
+<!--<body>-->
+<!--	<div class="img">Wild Life....</div>-->
+<!--</body>-->
+</html>
+
+
+
+
+
 ![Model Architecture](figures/ConNet_config.png)
 
 ### Dataset
