@@ -122,7 +122,7 @@ def train(opt):
         loss_epoch = sum(train_loss)/len(traindata)
         totalTrain_loss.append(loss_epoch)
         with open(path_t, 'a') as f:
-            f.write('Epoch{}\tLoss{}\tAccuracy{}\n'.format(epoch+1, loss_epoch,
+            f.write('Epoch: {}\t Loss: {}\t Accuracy: {}\n'.format(epoch+1, loss_epoch,
                                                          metrics.accuracy_score(total_labels,total_predictions)))
 
 
@@ -145,6 +145,7 @@ def train(opt):
                                                                         opt.epochs, loss_v.item(),
                                                                         metrics.accuracy_score(label_e.cpu(), pred_e)))
         val_lossEpoch= sum(val_loss)/len(valdata)
+
         totalVal_loss.append(val_lossEpoch)
         with open(path_v, 'a') as f:
             f.write('Epoch: {}\tLoss: {}\tAccuracy: {}\n'.format(epoch+1, val_lossEpoch,
@@ -158,13 +159,13 @@ def train(opt):
             best_score = val_lossEpoch
             torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
         elif val_lossEpoch > best_score:
-            print("Loss:{} doesn't decreased from {}".format(val_loss, best_score))
+            print("Loss:{} doesn't decreased from {}".format(val_lossEpoch, best_score))
             count +=1
             if count >= opt.early_stopping:
                 early_stop = True
         elif val_lossEpoch < best_score:
-            print("Loss:{} decreased from {}. Saving model........".format(val_loss, best_score))
-            best_score = val_loss
+            print("Loss:{} decreased from {}. Saving model........".format(val_lossEpoch, best_score))
+            best_score = val_lossEpoch
             torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
             count = 0
         if early_stop:

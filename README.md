@@ -1,4 +1,6 @@
 
+
+
 # Very-Deep-Convolutional-Networks-for-Large-Scale-Image-Recognition
 
 This project work is a implementation of [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/pdf/1409.1556.pdf) in Pytorch. 
@@ -16,6 +18,15 @@ The dataset is devided in to 3 sets:
 - Trainset is composed with 200 clasess and each class has 200 samples with a 64x64 pixels
 - Validationset has composed with a 50 samples per each class. 
 - Testset is a total size 10000 samples.
+
+<b>Sample images from trainset</b>
+
+![trainsample](figures/train_sample.png)
+
+<b>Sample images from validationset</b>
+
+![valsample](figures/val_sample.png)
+
 
 ### Computing resources 
 The models were trained on GPU, which is having a configuration of Nvidia-GTX 1070 8gb. Each model has took approx. 14h to 20h for training.  
@@ -54,4 +65,11 @@ Coming soon
           -lr LR, --lr LR       learning rate for an Adam optimizer
 
 
+<b>Example usage:</b>
+
+        For training a model having a layer depth of 11:
+            python train.py -d 11 -e 50 -es 5 -b 50 
+           
+        For training a model having a layer depth of 16 along with smaller Conv filter 1x1:
+            python train.py -d 16 -c11 -e 50 -es 5 -b 50 
 
