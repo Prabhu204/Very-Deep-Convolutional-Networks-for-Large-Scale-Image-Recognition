@@ -40,7 +40,7 @@ Coming soon
 
 |layers Vs Dataset    | Trainset | Valset | Testset |
 |-------------------|----------|--------|---------|
-| 11 layers         |          |        |         |
+| 11 layers         | 0.4800       |  0.3591      |         |
 | 13 layers         |          |        |         |
 | 16 layers         |          |        |         |
 | 16 layers, Cf:1x1 |          |        |         |
@@ -51,7 +51,7 @@ Coming soon
 
 |layers Vs Dataset    | Trainset | Valset | Testset |
 |-------------------|----------|--------|---------|
-| 11 layers         |          |        |         |
+| 11 layers         |  2.03        |  2.75  |         |
 | 13 layers         |          |        |         |
 | 16 layers         |          |        |         |
 | 16 layers, Cf:1x1 |          |        |         |
