@@ -44,13 +44,13 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 
 <p>
-  <img src="figures/trainVal_loss_11.png" width="300" title="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="300" title="11 layer model">
+  <img src="figures/trainVal_loss_11.png" width="500" title="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="500" title="11 layer model">
 </p>
 
 <p>
-  <img src="figures/trainVal_loss_16.png" width="300" title="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="300" title="11 layer model">
+  <img src="figures/trainVal_loss_16.png" width="500" title="11 layer model">
+  <img src="figures/trainVal_loss_19.png" width="500" title="11 layer model">
 </p>
 
 
@@ -65,7 +65,7 @@ Coming soon
 | 13 layers         | 0.5133       |  0.4001    |         |
 | 16 layers         |  0.5140      |   0.3809     |         |
 | 16 layers, Cf:1x1 |          |        |         |
-| 19 layers         |          |        |         |
+| 19 layers         |    0.4890      | 0.3563       |         |
 
 <b>Loss:</b>
 Coming soon
@@ -76,7 +76,7 @@ Coming soon
 | 13 layers         |  1.85        | 2.57       |         |
 | 16 layers         |  1.83        |    2.64    |         |
 | 16 layers, Cf:1x1 |          |        |         |
-| 19 layers         |          |        |         |
+| 19 layers         |      1.92    |   2.79     |         |
 
 ### Usage
 

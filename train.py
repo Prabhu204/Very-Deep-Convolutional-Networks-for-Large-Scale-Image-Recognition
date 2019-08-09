@@ -73,7 +73,10 @@ def train(opt):
 
     def plot_fig(train_loss, val_loss):
         plt.figure(figsize=(10,8))
-        plt.title("{} layer model".format(opt.depth))
+        if opt.conv1_1 and opt.depth==16:
+            plt.title("{}_C11 layer model".format(opt.depth))
+        else:
+            plt.title("{} layer model".format(opt.depth))
         plt.plot(train_loss, label= 'Train_loss')
         plt.plot(val_loss, label= 'Val_loss')
         plt.xlabel("Epochs")
