@@ -44,13 +44,13 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 
 <p>
-  <img src="figures/trainVal_loss_11.png" width="600" title="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="600" title="11 layer model">
+  <img src="figures/trainVal_loss_11.png" width="300" title="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="300" title="11 layer model">
 </p>
 
 <p>
-  <img src="figures/trainVal_loss_16.png" width="600" title="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="600" title="11 layer model">
+  <img src="figures/trainVal_loss_16.png" width="300" title="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="300" title="11 layer model">
 </p>
 
 

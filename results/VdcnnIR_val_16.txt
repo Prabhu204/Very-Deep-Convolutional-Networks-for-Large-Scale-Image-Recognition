@@ -3,3 +3,17 @@ Epoch: 2	Loss: 4.263026257324219	Accuracy: 0.0693
 Epoch: 3	Loss: 4.38979027633667	Accuracy: 0.0774
 Epoch: 4	Loss: 3.7127472702026365	Accuracy: 0.1461
 Epoch: 5	Loss: 3.62990654258728	Accuracy: 0.171
+Epoch: 6	Loss: 3.529585153579712	Accuracy: 0.1849
+Epoch: 7	Loss: 3.2836610485076902	Accuracy: 0.2195
+Epoch: 8	Loss: 3.1582466457366944	Accuracy: 0.2467
+Epoch: 9	Loss: 3.1485134944915774	Accuracy: 0.2524
+Epoch: 10	Loss: 3.044199815750122	Accuracy: 0.274
+Epoch: 11	Loss: 2.951482342529297	Accuracy: 0.3005
+Epoch: 12	Loss: 2.88887221031189	Accuracy: 0.3098
+Epoch: 13	Loss: 2.78086823387146	Accuracy: 0.3313
+Epoch: 14	Loss: 2.7772134422302246	Accuracy: 0.3423
+Epoch: 15	Loss: 2.800983214187622	Accuracy: 0.345
+Epoch: 16	Loss: 2.7743993656158445	Accuracy: 0.3456
+Epoch: 17	Loss: 2.8474388092041014	Accuracy: 0.3452
+Epoch: 18	Loss: 2.731768542098999	Accuracy: 0.3688
+Epoch: 19	Loss: 2.7379314506530763	Accuracy: 0.3684
