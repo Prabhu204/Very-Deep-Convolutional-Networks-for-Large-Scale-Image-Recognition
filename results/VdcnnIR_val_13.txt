@@ -1,1 +1,7 @@
-Epoch: 1	Loss: 5.298380421447754	Accuracy: 0.005
+Epoch: 1	Loss: 4.80705400314331	Accuracy: 0.0382
+Epoch: 2	Loss: 4.121186338043213	Accuracy: 0.0968
+Epoch: 3	Loss: 3.8227782348632813	Accuracy: 0.1399
+Epoch: 4	Loss: 3.5788737255096437	Accuracy: 0.1785
+Epoch: 5	Loss: 3.281327283859253	Accuracy: 0.228
+Epoch: 6	Loss: 3.201753697967529	Accuracy: 0.2533
+Epoch: 7	Loss: 3.0366087295532225	Accuracy: 0.2777

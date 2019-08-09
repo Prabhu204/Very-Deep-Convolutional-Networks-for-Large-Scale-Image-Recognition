@@ -23,14 +23,14 @@ def get_args():
                                                                            It must be in the data directory """)
     parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[16,32,50], default=16, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=64, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
     parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
                         help="""setting it True will replace some of the 3x3 Conv layers with 1x1 Conv layers in the 16 layer network""")
     parser.add_argument('-es', '--early_stopping', type=int, default= 6, help="""early stopping is used to stop training of network, 
                                                                         if does not improve validation loss""")
-    parser.add_argument('-i', '--imagesize', type=int, default=224, help="it is used to resize the image pixels" )
+    parser.add_argument('-i', '--imagesize', type=int, default=64, help="it is used to resize the image pixels" )
     parser.add_argument('-lr', '--lr', type=int, default=0.001, help="learning rate for an Adam optimizer")
     args = parser.parse_args()
     return args
@@ -67,13 +67,13 @@ def train(opt):
     else:
         model = Vgg(num_channels=num_channels, num_classes=classes, depth=opt.depth, initialize_weights=True,
                     conv1_1=False).to(device)
-
+    # return model
     optimizer = optim.Adam(model.parameters(), lr=opt.lr)
     criterion = nn.CrossEntropyLoss()
 
     def plot_fig(train_loss, val_loss):
         plt.figure(figsize=(10,8))
-        plt.title("Train Vs Val loss")
+        plt.title("{} layer model".format(opt.depth))
         plt.plot(train_loss, label= 'Train_loss')
         plt.plot(val_loss, label= 'Val_loss')
         plt.xlabel("Epochs")
@@ -184,5 +184,7 @@ if __name__ == '__main__':
     opt = get_args()
     loss = train(opt)
     print(loss)
-
-
+# if __name__ == '__main__':
+#     opt=get_args()
+#     print(train(opt=opt))
+#

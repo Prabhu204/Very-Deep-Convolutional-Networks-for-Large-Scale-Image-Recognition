@@ -35,6 +35,23 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 ### Results
 
+<b>Model performance plots:</b>
+
+![11 layer model](figures/trainVal_loss_11.png?raw=true "11 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")
+
+![11 layer model](figures/trainVal_loss_16.png?raw=true "16 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")
+
+
+
+<!--<p>-->
+<!--  <img src="figures/trainVal_loss_11.png" width="600" title="11 layer model">-->
+<!--  <img src="figures/trainVal_loss_13.png" width="600" title="11 layer model">-->
+<!--</p>-->
+
+
+
+
+
 <b>Accuracy:</b>
 Coming soon
 
