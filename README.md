@@ -31,6 +31,11 @@ The dataset is devided in to 3 sets:
 
 ![valsample](figures/val_sample.png)
 
+<b>Sample testset images with its predicted class:</b>
+
+![testsample](figures/figures/test_predictions.png)
+
+
 
 ### Computing resources 
 The models were trained on GPU, which is having a configuration of Nvidia-GTX 1070 8gb. Each model has took approx. 14h to 20h for training.  
