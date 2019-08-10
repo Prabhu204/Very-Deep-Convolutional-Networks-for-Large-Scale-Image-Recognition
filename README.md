@@ -37,47 +37,47 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 <b>Model performance plots:</b>
 
-<!--![11 layer model](figures/trainVal_loss_11.png?raw=true "11 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")-->
+![11 layer model](figures/trainVal_loss_11.png?raw=true "11 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")
 
-<!--![11 layer model](figures/trainVal_loss_16.png?raw=true "16 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")-->
-
-
-
-<p>
-  <img src="figures/trainVal_loss_11.png" width="450" title="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="450" title="11 layer model">
-  <img src="figures/trainVal_loss_16.png" width="450" title="11 layer model">
-  <img src="figures/trainVal_loss_19.png" width="450" title="11 layer model">
-</p>
+![16 layer model](figures/trainVal_loss_16.png?raw=true "16 layer model")   ![19 layer model](figures/trainVal_loss_19.png?raw=true "19 layer model")
 
 
+
+<!--<p>-->
+<!--  <img src="figures/trainVal_loss_11.png" width="450" title="11 layer model">-->
+<!--  <img src="figures/trainVal_loss_13.png" width="450" title="11 layer model">-->
+<!--  <img src="figures/trainVal_loss_16.png" width="450" title="11 layer model">-->
+<!--  <img src="figures/trainVal_loss_19.png" width="450" title="11 layer model">-->
+<!--</p>-->
 
 
 
 
 
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">London</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
-</div>
 
-<div id="London" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-</div>
 
-<div id="Paris" class="tabcontent">
-  <h3>Paris</h3>
-  <p>Paris is the capital of France.</p> 
-</div>
+<!--<div class="tab">-->
+<!--  <button class="tablinks" onclick="openCity(event, 'London')">London</button>-->
+<!--  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>-->
+<!--  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>-->
+<!--</div>-->
 
-<div id="Tokyo" class="tabcontent">
-  <h3>Tokyo</h3>
-  <p>Tokyo is the capital of Japan.</p>
-</div>
+<!--<div id="London" class="tabcontent">-->
+<!--  <h3>London</h3>-->
+<!--  <p>London is the capital city of England.</p>-->
+<!--</div>-->
 
-<script>
+<!--<div id="Paris" class="tabcontent">-->
+<!--  <h3>Paris</h3>-->
+<!--  <p>Paris is the capital of France.</p> -->
+<!--</div>-->
+
+<!--<div id="Tokyo" class="tabcontent">-->
+<!--  <h3>Tokyo</h3>-->
+<!--  <p>Tokyo is the capital of Japan.</p>-->
+<!--</div>-->
+
+<!--<script>-->
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
