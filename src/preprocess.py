@@ -32,10 +32,14 @@ def preprocess(path, batchsize, imagesize, shuffle = True):
         # print(class_[i])
         if i == 3:
             break
-    if 'train' in path:
-        plt.savefig('figures/train_sample.png')
-        plt.close()
-    else:
-        plt.savefig('figures/val_sample.png')
-        plt.close()
+    # if 'train' in path:
+    #     plt.savefig('figures/train_sample.png')
+    #     plt.close()
+    # elif 'test' in path:
+    #     # plt.savefig('figures/test_sample.png')
+    #     # plt.close()
+    #     pass
+    # else:
+    #     plt.savefig('figures/val_sample.png')
+    #     plt.close()
     return loaddata, dataLoader, len(classes_)

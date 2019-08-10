@@ -67,9 +67,14 @@ if __name__ == '__main__':
     if os.path.exists('results/test_predictions.csv'):
         df_old = pd.read_csv('results/test_predictions.csv')
         df_new = pd.concat([df_old, df], axis=1)
-        # df_new.to_csv('results/test_predictions.csv',index=False)
-    else:
+        if len(df_new.columns) >=5:
+            df_new['max_prediction'] = df_new.mode(axis= 'columns', numeric_only= True)
+        #df_new.to_csv('results/test_predictions.csv',index=False)
+    elif os.path.exists('results/test_predictions.csv') == False:
         df.to_csv('results/test_predictions.csv',index=False)
+
+
 
     print(df.head())
     print(df_new.head())
+    print()

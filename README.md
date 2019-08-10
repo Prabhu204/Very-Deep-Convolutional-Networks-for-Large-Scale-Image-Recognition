@@ -11,7 +11,9 @@ improved by using smaller convolutional filter
 ### Model Architecture
 The models were implemented as per original paper description, which can be seen in the following figure.
 
-![Model Architecture](figures/ConNet_config.png)
+
+<img src="figures/ConNet_config.png" width="600" height="600">
+<!--![Model Architecture](figures/ConNet_config.png)-->
 
 ### Dataset
 
@@ -35,6 +37,8 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 ### Results
 
+
+
 <b>Model performance plots:</b>
 
 <!--![11 layer model](figures/trainVal_loss_11.png =250x)   ![13 layer model](figures/trainVal_loss_13.png =250x)-->
@@ -44,63 +48,12 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 <!--![19 layer model](figures/trainVal_loss_19.png =250x)-->
 
 <p >
-  <img src="figures/trainVal_loss_11.png" width="400" height="455" alt="11 layer model">
-  <img src="figures/trainVal_loss_13.png" width="400" height="455" alt="13 layer model">
-  <img src="figures/trainVal_loss_16.png" width="400" height="455" alt="16 layer model">
-  <img src="figures/trainVal_loss_C11_16.png" width="400" height="455" alt="16 C1x1 layer model">
-  <img src="figures/trainVal_loss_19.png" width="400" height="455" alt="19 layer model">
+  <img src="figures/trainVal_loss_11.png" width="400" height="400" alt="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="400" height="400" alt="13 layer model">
+  <img src="figures/trainVal_loss_16.png" width="400" height="400" alt="16 layer model">
+  <img src="figures/trainVal_loss_C11_16.png" width="400" height="400" alt="16 C1x1 layer model">
+  <img src="figures/trainVal_loss_19.png" width="400" height="400" alt="19 layer model">
 </p>
-
-
-
-
-
-
-
-<!--<div class="tab">-->
-<!--  <button class="tablinks" onclick="openCity(event, 'London')">London</button>-->
-<!--  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>-->
-<!--  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>-->
-<!--</div>-->
-
-<!--<div id="London" class="tabcontent">-->
-<!--  <h3>London</h3>-->
-<!--  <p>London is the capital city of England.</p>-->
-<!--</div>-->
-
-<!--<div id="Paris" class="tabcontent">-->
-<!--  <h3>Paris</h3>-->
-<!--  <p>Paris is the capital of France.</p> -->
-<!--</div>-->
-
-<!--<div id="Tokyo" class="tabcontent">-->
-<!--  <h3>Tokyo</h3>-->
-<!--  <p>Tokyo is the capital of Japan.</p>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--function openCity(evt, cityName) {-->
-<!--  var i, tabcontent, tablinks;-->
-<!--  tabcontent = document.getElementsByClassName("tabcontent");-->
-<!--  for (i = 0; i < tabcontent.length; i++) {-->
-<!--    tabcontent[i].style.display = "none";-->
-<!--  }-->
-<!--  tablinks = document.getElementsByClassName("tablinks");-->
-<!--  for (i = 0; i < tablinks.length; i++) {-->
-<!--    tablinks[i].className = tablinks[i].className.replace(" active", "");-->
-<!--  }-->
-<!--  document.getElementById(cityName).style.display = "block";-->
-<!--  evt.currentTarget.className += " active";-->
-<!--}-->
-<!--</script>-->
-
-
-
-
-
-
-
-
 
 
 
@@ -108,21 +61,21 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 |layers Vs Dataset    | Trainset | Valset | Testset |
 |-------------------|----------|--------|---------|
-| 11 layers         | 0.4800       |  0.3591      |         |
-| 13 layers         | 0.5133       |  0.4001    |         |
-| 16 layers         |  0.5140      |   0.3809     |         |
-| 16 layers, Cf:1x1 |  0.4932        |    0.3845    |         |
-| 19 layers         |    0.4890      | 0.3563       |         |
+| 11 layers         | 0.4800       |  0.3591      |    -     |
+| 13 layers         | 0.5133       |  0.4001    |       -  |
+| 16 layers         |  0.48322      |   0.3692     |      -   |
+| 16 layers, Cf:1x1 |  0.4932        |    0.3845    |     -    |
+| 19 layers         |    0.4890      | 0.3563       |      -   |
 
 <b>Loss:</b>
 
 |layers Vs Dataset    | Trainset | Valset | Testset |
 |-------------------|----------|--------|---------|
-| 11 layers         |  2.03        |  2.75  |         |
-| 13 layers         |  1.85        | 2.57       |         |
-| 16 layers         |  1.83        |    2.64    |         |
-| 16 layers, Cf:1x1 |   1.91       |     2.63   |         |
-| 19 layers         |      1.92    |   2.79     |         |
+| 11 layers         |  2.03        |  2.75  |    -     |
+| 13 layers         |  1.85        | 2.57       | -        |
+| 16 layers         |  1.95        |    2.65    |  -       |
+| 16 layers, Cf:1x1 |   1.91       |     2.63   |   -      |
+| 19 layers         |      1.92    |   2.79     |    -     |
 
 ### Usage
 
