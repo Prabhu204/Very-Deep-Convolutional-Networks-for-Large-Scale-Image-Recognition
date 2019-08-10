@@ -23,7 +23,7 @@ def get_args():
                                                                            It must be in the data directory """)
     parser.add_argument('-v', '--val', type=str, default='val_', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=64, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256, 512], default=64, help='select number of samples to load from dataset')
     parser.add_argument('-e', '--epochs', type=int, choices=[50, 100, 150], default=50)
     parser.add_argument('-d', '--depth', type=int, choices=[11,13,16,19], default=11, help='depth of the deep learning model')
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
@@ -160,7 +160,10 @@ def train(opt):
         # print(loss_fig)
         if best_score is None:
             best_score = val_lossEpoch
-            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+            if opt.conv1_1 and opt.depth == 16:
+                torch.save(model, 'models/VdcnnIR_C11_{}'.format(opt.depth))
+            else:
+                torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
         elif val_lossEpoch > best_score:
             print("Loss:{} doesn't decreased from {}".format(val_lossEpoch, best_score))
             count +=1
@@ -169,7 +172,10 @@ def train(opt):
         elif val_lossEpoch < best_score:
             print("Loss:{} decreased from {}. Saving model........".format(val_lossEpoch, best_score))
             best_score = val_lossEpoch
-            torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
+            if opt.conv1_1 and opt.depth == 16:
+                torch.save(model, 'models/VdcnnIR_C11_{}'.format(opt.depth))
+            else:
+                torch.save(model, 'models/VdcnnIR_{}'.format(opt.depth))
             count = 0
         if early_stop:
             break

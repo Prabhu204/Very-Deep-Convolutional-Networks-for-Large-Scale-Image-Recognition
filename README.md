@@ -37,18 +37,19 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 <b>Model performance plots:</b>
 
-![11 layer model](figures/trainVal_loss_11.png?raw=true "11 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")
+<!--![11 layer model](figures/trainVal_loss_11.png?raw=true "11 layer model")   ![13 layer model](figures/trainVal_loss_13.png?raw=true "13 layer model")-->
 
-![16 layer model](figures/trainVal_loss_16.png?raw=true "16 layer model")   ![19 layer model](figures/trainVal_loss_19.png?raw=true "19 layer model")
+<!--![16 layer model](figures/trainVal_loss_16.png?raw=true "16 layer model")   ![19 layer model](figures/trainVal_loss_19.png?raw=true "19 layer model")-->
 
 
 
-<!--<p>-->
-<!--  <img src="figures/trainVal_loss_11.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_13.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_16.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_19.png" width="450" title="11 layer model">-->
-<!--</p>-->
+<p align="center">
+  <img src="figures/trainVal_loss_11.png" width="450" title="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="450" title="11 layer model">
+  <img src="figures/trainVal_loss_16.png" width="450" title="11 layer model">
+  <img src="figures/trainVal_loss_C11_16.png" width="450" title="11 layer model">
+  <img src="figures/trainVal_loss_19.png" width="450" title="11 layer model">
+</p>
 
 
 
@@ -78,20 +79,20 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 <!--</div>-->
 
 <!--<script>-->
-function openCity(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-</script>
+<!--function openCity(evt, cityName) {-->
+<!--  var i, tabcontent, tablinks;-->
+<!--  tabcontent = document.getElementsByClassName("tabcontent");-->
+<!--  for (i = 0; i < tabcontent.length; i++) {-->
+<!--    tabcontent[i].style.display = "none";-->
+<!--  }-->
+<!--  tablinks = document.getElementsByClassName("tablinks");-->
+<!--  for (i = 0; i < tablinks.length; i++) {-->
+<!--    tablinks[i].className = tablinks[i].className.replace(" active", "");-->
+<!--  }-->
+<!--  document.getElementById(cityName).style.display = "block";-->
+<!--  evt.currentTarget.className += " active";-->
+<!--}-->
+<!--</script>-->
 
 
 
@@ -110,7 +111,7 @@ function openCity(evt, cityName) {
 | 11 layers         | 0.4800       |  0.3591      |         |
 | 13 layers         | 0.5133       |  0.4001    |         |
 | 16 layers         |  0.5140      |   0.3809     |         |
-| 16 layers, Cf:1x1 |          |        |         |
+| 16 layers, Cf:1x1 |  0.4932        |    0.3845    |         |
 | 19 layers         |    0.4890      | 0.3563       |         |
 
 <b>Loss:</b>
@@ -120,7 +121,7 @@ function openCity(evt, cityName) {
 | 11 layers         |  2.03        |  2.75  |         |
 | 13 layers         |  1.85        | 2.57       |         |
 | 16 layers         |  1.83        |    2.64    |         |
-| 16 layers, Cf:1x1 |          |        |         |
+| 16 layers, Cf:1x1 |   1.91       |     2.63   |         |
 | 19 layers         |      1.92    |   2.79     |         |
 
 ### Usage
