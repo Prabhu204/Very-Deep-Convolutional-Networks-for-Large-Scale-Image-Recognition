@@ -33,7 +33,7 @@ The dataset is devided in to 3 sets:
 
 <b>Sample testset images with its predicted class:</b>
 
-![testsample](figures/figures/test_predictions.png)
+![testsample](figures/test_predictions.png)
 
 
 
