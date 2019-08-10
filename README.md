@@ -43,7 +43,7 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 <!--![19 layer model](figures/trainVal_loss_19.png =250x)-->
 
-<p align="center">
+<p >
   <img src="figures/trainVal_loss_11.png" width="450" height="455" alt="11 layer model">
   <img src="figures/trainVal_loss_13.png" width="450" height="455" alt="13 layer model">
   <img src="figures/trainVal_loss_16.png" width="450" height="455" alt="16 layer model">
