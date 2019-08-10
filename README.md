@@ -37,19 +37,19 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 
 <b>Model performance plots:</b>
 
-![11 layer model](figures/trainVal_loss_11.png =250x)   ![13 layer model](figures/trainVal_loss_13.png =250x)
+<!--![11 layer model](figures/trainVal_loss_11.png =250x)   ![13 layer model](figures/trainVal_loss_13.png =250x)-->
 
-![16 layer model](figures/trainVal_loss_16.png =250x)   ![16_c11 layer model](figures/trainVal_loss_C11_16.png =250x)
+<!--![16 layer model](figures/trainVal_loss_16.png =250x)   ![16_c11 layer model](figures/trainVal_loss_C11_16.png =250x)-->
 
-![19 layer model](figures/trainVal_loss_19.png =250x)
+<!--![19 layer model](figures/trainVal_loss_19.png =250x)-->
 
-<!--<p align="center">-->
-<!--  <img src="figures/trainVal_loss_11.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_13.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_16.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_C11_16.png" width="450" title="11 layer model">-->
-<!--  <img src="figures/trainVal_loss_19.png" width="450" title="11 layer model">-->
-<!--</p>-->
+<p align="center">
+  <img src="figures/trainVal_loss_11.png" width="450" height="455" alt="11 layer model">
+  <img src="figures/trainVal_loss_13.png" width="450" height="455" alt="13 layer model">
+  <img src="figures/trainVal_loss_16.png" width="450" height="455" alt="16 layer model">
+  <img src="figures/trainVal_loss_C11_16.png" width="450" height="455" alt="16 C1x1 layer model">
+  <img src="figures/trainVal_loss_19.png" width="450" height="455" alt="19 layer model">
+</p>
 
 
 

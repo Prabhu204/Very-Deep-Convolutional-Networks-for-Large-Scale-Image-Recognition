@@ -4,3 +4,4 @@ Epoch: 3	 Loss: 4.035345040893555	 Accuracy: 0.10431
 Epoch: 4	 Loss: 3.705535211791992	 Accuracy: 0.14913
 Epoch: 5	 Loss: 3.441051435394287	 Accuracy: 0.19219
 Epoch: 6	 Loss: 3.2423773394775393	 Accuracy: 0.22636
+Epoch: 7	 Loss: 3.0713412163543703	 Accuracy: 0.25846
