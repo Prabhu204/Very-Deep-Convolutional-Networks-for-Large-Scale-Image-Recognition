@@ -12,12 +12,13 @@ import numpy as np
 import pickle
 import pandas as pd
 from src.vdcnnIR import Vgg
+import glob
 
 def get_args():
     parser = argparse.ArgumentParser("""Very Deep Convolutional Networks for Large Scale Image Recognition""")
     parser.add_argument('-t', '--test', type=str, default='test', help="""required image dataset for training a model.
                                                                               It must be in the data directory """)
-    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256], default=64, help='select number of samples to load from dataset')
+    parser.add_argument('-b', '--batchsize', type=int, choices=[64,128,256, 512], default=1024, help='select number of samples to load from dataset')
     parser.add_argument('-i', '--imagesize', type=int, default=64, help="it is used to resize the image pixels" )
     parser.add_argument('-m', '--model', type=int, choices=[11,13,16,19], default=64, help="it is used to resize the image pixels" )
     parser.add_argument('-c11', '--conv1_1', action='store_true', default=False,
@@ -28,8 +29,8 @@ def get_args():
 
 def test(opt):
     testdata, testGenerator, classes = preprocess(path='./data' + os.sep + opt.test, batchsize=opt.batchsize,
-                                                    imagesize=opt.imagesize , shuffle=True)
-
+                                                    imagesize=opt.imagesize , shuffle=False)
+    images = [i[0].split('/')[-1] for i in testGenerator.sampler.data_source.imgs]
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = Vgg(num_channels=3, num_classes=200, depth=opt.model, conv1_1=False,initialize_weights=True).to(device)
     print(iter(testGenerator).__next__()[0].size())
@@ -46,35 +47,42 @@ def test(opt):
         with torch.no_grad():
             prob_t = model(data_t)
             pred_t = np.argmax(prob_t.detach().cpu(), -1)
-            total_testpredictions.extend(pred_t)
+            total_testpredictions.extend(pred_t.tolist())
             print('Iter: [{}/{}]'.format(idx_t + 1, len(testGenerator)))
 
-    if opt.c11 and opt.model:
+    if opt.conv1_1 and opt.model:
         with open('./results/model_{}_C11_Testpred'.format(opt.model), 'wb') as f:
             pickle.dump(total_testpredictions, f)
     else:
         with open('./results/model_{}_Testpred'.format(opt.model), 'wb') as f:
             pickle.dump(total_testpredictions, f)
-    return total_testpredictions
+    return images, total_testpredictions
 if __name__ == '__main__':
     opt = get_args()
-    pre = test(opt=opt)
-    if opt.c11 and opt.model:
-        df = pd.DataFrame({str(opt.model)+'_C11': pre})
+    images, pre = test(opt=opt)
+    num_models = len(os.listdir('models'))
+    with open('results/class_to_idx','rb') as f:
+            class_to_id = pickle.load(f)
+    if opt.conv1_1 and opt.model:
+        df_ = pd.DataFrame({str(opt.model)+'_C11': pre})
     else:
-        df = pd.DataFrame({str(opt.model):pre})
-
+        df_ = pd.DataFrame({str(opt.model):pre})
     if os.path.exists('results/test_predictions.csv'):
         df_old = pd.read_csv('results/test_predictions.csv')
-        df_new = pd.concat([df_old, df], axis=1)
-        if len(df_new.columns) >=5:
-            df_new['max_prediction'] = df_new.mode(axis= 'columns', numeric_only= True)
-        #df_new.to_csv('results/test_predictions.csv',index=False)
+        df_old = pd.concat([df_old, df_], axis=1)
+        if len(df_old.columns) == (num_models+1):
+            df_pre= df_old.mode(axis= 'columns', numeric_only= True)
+            df_old = pd.concat([df_old, df_pre], axis=1)
+            df_old = df_old.rename(columns={'0': 'mode_pred'})
+            df_old['mode_pred'] = df_old['mode_pred'].astype(int)
+            class_pred  =[[k for j in df_old.mode_pred.to_list() for k, v in class_to_id.items() if j == v] ]
+            df_old = pd.concat([df_old, pd.DataFrame({'class_pred':class_pred})],axis=1)
+        df_old.to_csv('results/test_predictions.csv',index=False)
+
     elif os.path.exists('results/test_predictions.csv') == False:
+        df = pd.DataFrame({'images':images})
+        df = pd.concat([df,df_], axis=1)
         df.to_csv('results/test_predictions.csv',index=False)
+    print(df_.head())
+    print(df_old.head())
 
-
-
-    print(df.head())
-    print(df_new.head())
-    print()
