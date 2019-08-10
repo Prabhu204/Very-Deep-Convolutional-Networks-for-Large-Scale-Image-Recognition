@@ -12,7 +12,9 @@ import numpy as np
 import pickle
 import pandas as pd
 from src.vdcnnIR import Vgg
-import glob
+import matplotlib.image as img
+import matplotlib.pyplot as plt
+
 
 def get_args():
     parser = argparse.ArgumentParser("""Very Deep Convolutional Networks for Large Scale Image Recognition""")
@@ -71,6 +73,8 @@ if __name__ == '__main__':
         df_old = pd.read_csv('results/test_predictions.csv')
         df_old = pd.concat([df_old, df_], axis=1)
         if len(df_old.columns) == (num_models+1):
+
+            # class prediction of a test image is selected based on mode value of prediction from all models for the same test image.
             df_pre= df_old.mode(axis= 'columns', numeric_only= True)
             df_old = pd.concat([df_old, df_pre], axis=1)
             df_old = df_old.rename(columns={'0': 'mode_pred'})
@@ -78,6 +82,17 @@ if __name__ == '__main__':
             class_pred  =[[k for j in df_old.mode_pred.to_list() for k, v in class_to_id.items() if j == v] ]
             df_old = pd.concat([df_old, pd.DataFrame({'class_pred':class_pred})],axis=1)
         df_old.to_csv('results/test_predictions.csv',index=False)
+
+        # display test images with predicted class
+        sample = df_old[['images', 'class_pred']].head(n=4)
+        images, pred = sample.images.to_list(), sample.class_pred.to_list()
+        fig, axes = plt.subplots(1, 4, figsize=(12, 3))
+        for i, image in enumerate(images):
+            axes[i].imshow(img.imread('data/test/images/{}'.format(image)))
+            axes[i].set_title('pred_class:' + str(pred[i]))
+            axes[i].set_xticks([])
+            axes[i].set_yticks([])
+        plt.savefig('figures/test_predictions.png')
 
     elif os.path.exists('results/test_predictions.csv') == False:
         df = pd.DataFrame({'images':images})
