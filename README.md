@@ -4,12 +4,13 @@
 # Very-Deep-Convolutional-Networks-for-Large-Scale-Image-Recognition
 
 This project work is a implementation of [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/pdf/1409.1556.pdf) in Pytorch. 
-However, the dataset used for this project is from [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). Model performance can be 
-improved by using smaller convolutional filter
-(i.e feature extraction maps) with 3x3 size while increasing network layer depth.  
+However, the dataset used for this project is from [Tiny ImageNet Visual Recognition Challenge](https://tiny-imagenet.herokuapp.com/). The model performance can be 
+improved by using smaller convolutional filter (i.e feature extraction maps) with 3x3 size while increasing network layer depth. In this model, an adaptive maxpooling 
+layer was used between the final ConvNet layer and fully connected layer. Furthermore, this model  doesn't use any out dropout layers.   
+ 
 
 ### Model Architecture
-The models were implemented as per original paper description, which can be seen in the following figure.
+The models were implemented as per original paper description, which can be seen in the following figure. 
 
 
 <img src="figures/ConNet_config.png" width="600" height="600">
@@ -30,11 +31,6 @@ The dataset is devided in to 3 sets:
 <b>Sample images from validationset:</b>
 
 ![valsample](figures/val_sample.png)
-
-<b>Sample testset images with its predicted class:</b>
-
-![testsample](figures/test_predictions.png)
-
 
 
 ### Computing resources 
@@ -81,6 +77,17 @@ The models were trained on GPU, which is having a configuration of Nvidia-GTX 10
 | 16 layers         |  1.95        |    2.65    |  -       |
 | 16 layers, Cf:1x1 |   1.91       |     2.63   |   -      |
 | 19 layers         |      1.92    |   2.79     |    -     |
+
+
+<b>Sample testset images with its predicted class:</b>
+
+![testsample](figures/test_predictions.png)
+
+Predictions results were available at [test predictions file.](results/test_predictions.csv) Columns names <b>11,13,16,16_C11 and 19</b> were the predictions made by the each model.
+However, the predictions were different for different models. Hence, prediction for each test image was decided based on the highest frequency of a predicted class by each model. 
+Furthermore, the models made an unique prediction for some of the test images. In this case, prediction was considered from 11 layer model.      
+
+
 
 ### Usage
 
