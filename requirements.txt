@@ -3,4 +3,4 @@ torchvision==0.2.1
 numpy==1.14.5
 torch==0.4.0
 scikit_plot==0.3.7
-scikit_learn==0.21.3
+scikit_learn==1.5.0
